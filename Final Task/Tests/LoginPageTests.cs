@@ -19,17 +19,19 @@ public class LoginPageTests : IDisposable
         get
         {
             yield return (() => new ChromeOptions(), true);
-            // yield return (() => new FirefoxOptions(), true);
-            // yield return (() => new EdgeOptions(), true);
             yield return (() => new ChromeOptions(), false);
-            // yield return (() => new FirefoxOptions(), false);
-            // yield return (() => new EdgeOptions(), false);
             yield return (() =>
             {
                 var options = new ChromeOptions();
                 options.AddArgument("--headless=new");
                 return options;
             }, true);
+
+            yield return (() => new FirefoxOptions(), true);
+            yield return (() => new FirefoxOptions(), false);
+
+            yield return (() => new EdgeOptions(), true);
+            yield return (() => new EdgeOptions(), false);
         }
     }
 
