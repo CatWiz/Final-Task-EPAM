@@ -14,6 +14,11 @@ public class LoginPageObject
     private const string LoginButtonSelector = "input[type='submit']#login-button.submit-button";
     private const string ErrorMessageSelector = "div.error-message-container h3[data-test='error']";
 
+    private IWebElement UsernameField => this.driver.FindElement(By.CssSelector(UsernameFieldSelector));
+    private IWebElement PasswordField => this.driver.FindElement(By.CssSelector(PasswordFieldSelector));
+    private IWebElement LoginButton => this.driver.FindElement(By.CssSelector(LoginButtonSelector));
+    private IWebElement ErrorMessageDisplay => this.driver.FindElement(By.CssSelector(ErrorMessageSelector));
+
     public LoginPageObject(IWebDriver driver)
     {
         this.driver = driver;
@@ -30,10 +35,8 @@ public class LoginPageObject
     /// <param name="username">Username to enter</param>
     public void EnterUsername(string username)
     {
-        var usernameField = this.driver.FindElement(By.CssSelector(UsernameFieldSelector));
-
-        usernameField.ClearBySelectAndDelete();
-        usernameField.SendKeys(username);
+        this.UsernameField.ClearBySelectAndDelete();
+        this.UsernameField.SendKeys(username);
     }
 
     /// <summary>
@@ -43,8 +46,7 @@ public class LoginPageObject
     /// <returns>Current value of the input field</returns>
     public string GetUsername()
     {
-        var usernameField = this.driver.FindElement(By.CssSelector(UsernameFieldSelector));
-        return usernameField.GetAttribute("value") ?? string.Empty;
+        return this.UsernameField.GetAttribute("value") ?? string.Empty;
     }
 
     /// <summary>
@@ -52,9 +54,7 @@ public class LoginPageObject
     /// </summary>
     public void ClearUsername()
     {
-        var usernameField = this.driver.FindElement(By.CssSelector(UsernameFieldSelector));
-
-        usernameField.ClearBySelectAndDelete();
+        this.UsernameField.ClearBySelectAndDelete();
 
         _ = new WebDriverWait(this.driver, TimeSpan.FromSeconds(5))
             .Until(d => string.IsNullOrEmpty(this.GetUsername())); // Wait until the field is cleared
@@ -66,10 +66,8 @@ public class LoginPageObject
     /// <param name="password">Password to enter</param>
     public void EnterPassword(string password)
     {
-        var passwordField = this.driver.FindElement(By.CssSelector(PasswordFieldSelector));
-
-        passwordField.ClearBySelectAndDelete();
-        passwordField.SendKeys(password);
+        this.PasswordField.ClearBySelectAndDelete();
+        this.PasswordField.SendKeys(password);
     }
 
     /// <summary>
@@ -79,8 +77,7 @@ public class LoginPageObject
     /// <returns>Current value of the input field</returns>
     public string GetPassword()
     {
-        var passwordField = this.driver.FindElement(By.CssSelector(PasswordFieldSelector));
-        return passwordField.GetAttribute("value") ?? string.Empty;
+        return this.PasswordField.GetAttribute("value") ?? string.Empty;
     }
 
     /// <summary>
@@ -88,9 +85,7 @@ public class LoginPageObject
     /// </summary>
     public void ClearPassword()
     {
-        var passwordField = this.driver.FindElement(By.CssSelector(PasswordFieldSelector));
-
-        passwordField.ClearBySelectAndDelete();
+        this.PasswordField.ClearBySelectAndDelete();
 
         _ = new WebDriverWait(this.driver, TimeSpan.FromSeconds(5))
             .Until(d => string.IsNullOrEmpty(this.GetPassword())); // Wait until the field is cleared
@@ -103,15 +98,12 @@ public class LoginPageObject
     /// <exception cref="InvalidOperationException">Thrown if login fails or does not redirect to the inventory page</exception>
     public InventoryPageObject LoginExpectSuccess()
     {
-        var loginButton = this.driver.FindElement(By.CssSelector(LoginButtonSelector));
-        loginButton.Click();
+        this.LoginButton.Click();
 
-        var wait = new WebDriverWait(this.driver, TimeSpan.FromSeconds(10));
-        var success = wait.Until(d => d.Url.Contains("/inventory.html"));
+        _ = new WebDriverWait(this.driver, TimeSpan.FromSeconds(10))
+            .Until(d => d.Url.Contains("/inventory.html"));
 
-        return success
-            ? new InventoryPageObject(this.driver)
-            : throw new InvalidOperationException("Login failed or did not redirect to inventory page");
+        return new InventoryPageObject(this.driver);
     }
 
     /// <summary>
@@ -119,15 +111,12 @@ public class LoginPageObject
     /// </summary>
     public void LoginExpectFailure()
     {
-        var loginButton = this.driver.FindElement(By.CssSelector(LoginButtonSelector));
-
-        var actions = new Actions(this.driver)
+        new Actions(this.driver)
             .Pause(TimeSpan.FromSeconds(1)) // Optional pause before clicking
-            .Click(loginButton)
+            .Click(this.LoginButton)
             .Pause(TimeSpan.FromSeconds(3)) // Wait for any potential error message or redirection
-            .Build();
-
-        actions.Perform();
+            .Build()
+            .Perform();
     }
 
     /// <summary>
@@ -139,8 +128,7 @@ public class LoginPageObject
     {
         try
         {
-            var errorMessageElement = this.driver.FindElement(By.CssSelector(ErrorMessageSelector));
-            return errorMessageElement.Text;
+            return this.ErrorMessageDisplay.Text;
         }
         catch (NoSuchElementException)
         {
