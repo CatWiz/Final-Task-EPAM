@@ -17,7 +17,7 @@ public class LoginPageObject
     {
         this.driver = driver;
 
-        if (driver.Url != TestsConfig.BaseUrl)
+        if (driver.Url.TrimEnd('/') != TestsConfig.BaseUrl)
         {
             throw new InvalidOperationException($"Not on the login page, expected {TestsConfig.BaseUrl} but got {driver.Url}");
         }

@@ -18,9 +18,21 @@ public class LoginPageChromeTests : LoginPageTestsBase
     }
 
     [TestMethod]
-    public override void LoginWithNoCredentialsShouldShowUsernameMissingError()
+    public override void LoginAfterClearingCredentialsShouldShowUsernameMissingError()
     {
-        base.LoginWithNoCredentialsShouldShowUsernameMissingError();
+        base.LoginAfterClearingCredentialsShouldShowUsernameMissingError();
+    }
+
+    [TestMethod]
+    public override void LoginAfterClearingPasswordShouldShowPasswordMissingError()
+    {
+        base.LoginAfterClearingPasswordShouldShowPasswordMissingError();
+    }
+
+    [TestMethod]
+    public override void LoginWithValidCredentialsShouldRedirectToInventoryPage()
+    {
+        base.LoginWithValidCredentialsShouldRedirectToInventoryPage();
     }
 
     [TestCleanup]
