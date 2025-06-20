@@ -1,7 +1,7 @@
 ﻿using FinalTask.Config;
 using FluentAssertions;
 
-namespace FinalTask;
+namespace FinalTask.Tests;
 
 [TestClass]
 public sealed class Test1
