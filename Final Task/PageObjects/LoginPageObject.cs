@@ -39,8 +39,6 @@ public class LoginPageObject
     public void ClearUsername()
     {
         var usernameField = this.driver.FindElement(By.CssSelector(UsernameFieldSelector));
-        usernameField.Clear();
-
         if (!string.IsNullOrEmpty(usernameField.GetAttribute("value")))
         {
             usernameField.SendKeys(Keys.Control + "a" + Keys.Delete);
@@ -66,8 +64,6 @@ public class LoginPageObject
     public void ClearPassword()
     {
         var passwordField = this.driver.FindElement(By.CssSelector(PasswordFieldSelector));
-        passwordField.Clear();
-
         if (!string.IsNullOrEmpty(passwordField.GetAttribute("value")))
         {
             passwordField.SendKeys(Keys.Control + "a" + Keys.Delete);
@@ -95,9 +91,9 @@ public class LoginPageObject
         var loginButton = this.driver.FindElement(By.CssSelector(LoginButtonSelector));
 
         var actions = new Actions(this.driver)
-            .Pause(TimeSpan.FromSeconds(3)) // Optional pause before clicking
+            .Pause(TimeSpan.FromSeconds(1)) // Optional pause before clicking
             .Click(loginButton)
-            .Pause(TimeSpan.FromSeconds(5)) // Wait for any potential error message or redirection
+            .Pause(TimeSpan.FromSeconds(3)) // Wait for any potential error message or redirection
             .Build();
 
         actions.Perform();
