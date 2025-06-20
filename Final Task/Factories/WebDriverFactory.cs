@@ -1,6 +1,7 @@
 ﻿using FinalTask.Config;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Remote;
 
@@ -9,7 +10,8 @@ namespace FinalTask.Factories;
 public enum WebDriverType
 {
     Chrome,
-    Firefox
+    Firefox,
+    Edge
 }
 
 public static class WebDriverFactory
@@ -28,6 +30,7 @@ public static class WebDriverFactory
         {
             WebDriverType.Chrome => new ChromeOptions(),
             WebDriverType.Firefox => new FirefoxOptions(),
+            WebDriverType.Edge => new EdgeOptions(),
             _ => throw new ArgumentOutOfRangeException(nameof(type))
         };
 

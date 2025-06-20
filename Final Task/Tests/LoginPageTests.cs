@@ -17,6 +17,7 @@ public class LoginPageTests : IDisposable
         {
             yield return (WebDriverType.Chrome, null);
             yield return (WebDriverType.Firefox, null);
+            yield return (WebDriverType.Edge, null);
         }
     }
 
