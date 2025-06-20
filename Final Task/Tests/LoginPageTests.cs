@@ -15,13 +15,13 @@ public class LoginPageTests : IDisposable
     {
         get
         {
-            yield return [BrowserOptionsRepository.ChromeDefault];
-            yield return [BrowserOptionsRepository.FirefoxDefault];
-            yield return [BrowserOptionsRepository.EdgeDefault];
-
             yield return [BrowserOptionsRepository.ChromeHeadless];
             yield return [BrowserOptionsRepository.FirefoxHeadless];
             yield return [BrowserOptionsRepository.EdgeHeadless];
+
+            yield return [BrowserOptionsRepository.ChromeHeadlessTiny];
+            yield return [BrowserOptionsRepository.FirefoxHeadlessTiny];
+            yield return [BrowserOptionsRepository.EdgeHeadlessTiny];
         }
     }
 

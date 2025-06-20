@@ -1,5 +1,4 @@
 ﻿using FinalTask.Config;
-using FinalTask.Tests;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 
