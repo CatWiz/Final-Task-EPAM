@@ -1,4 +1,5 @@
 ﻿using FinalTask.Config;
+using FinalTask.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
@@ -23,56 +24,83 @@ public class LoginPageObject
         }
     }
 
+    /// <summary>
+    /// Clears the username input field and enters the specified username.
+    /// </summary>
+    /// <param name="username">Username to enter</param>
     public void EnterUsername(string username)
     {
         var usernameField = this.driver.FindElement(By.CssSelector(UsernameFieldSelector));
-        usernameField.Clear();
+
+        usernameField.ClearBySelectAndDelete();
         usernameField.SendKeys(username);
     }
 
-    public string? GetUsername()
+    /// <summary>
+    /// Gets the current value of the username input field.
+    /// If value is not set, returns an empty string.
+    /// </summary>
+    /// <returns>Current value of the input field</returns>
+    public string GetUsername()
     {
         var usernameField = this.driver.FindElement(By.CssSelector(UsernameFieldSelector));
-        return usernameField.GetAttribute("value");
+        return usernameField.GetAttribute("value") ?? string.Empty;
     }
 
+    /// <summary>
+    /// Clears the username input field.
+    /// </summary>
     public void ClearUsername()
     {
         var usernameField = this.driver.FindElement(By.CssSelector(UsernameFieldSelector));
-        if (!string.IsNullOrEmpty(usernameField.GetAttribute("value")))
-        {
-            usernameField.SendKeys(Keys.Control + "a" + Keys.Delete);
-        }
+
+        usernameField.ClearBySelectAndDelete();
 
         _ = new WebDriverWait(this.driver, TimeSpan.FromSeconds(5))
             .Until(d => string.IsNullOrEmpty(this.GetUsername())); // Wait until the field is cleared
     }
 
+    /// <summary>
+    /// Clears the password input field and enters the specified password.
+    /// </summary>
+    /// <param name="password">Password to enter</param>
     public void EnterPassword(string password)
     {
         var passwordField = this.driver.FindElement(By.CssSelector(PasswordFieldSelector));
-        passwordField.Clear();
+
+        passwordField.ClearBySelectAndDelete();
         passwordField.SendKeys(password);
     }
 
-    public string? GetPassword()
+    /// <summary>
+    /// Gets the current value of the password input field.
+    /// If value is not set, returns an empty string.
+    /// </summary>
+    /// <returns>Current value of the input field</returns>
+    public string GetPassword()
     {
         var passwordField = this.driver.FindElement(By.CssSelector(PasswordFieldSelector));
-        return passwordField.GetAttribute("value");
+        return passwordField.GetAttribute("value") ?? string.Empty;
     }
 
+    /// <summary>
+    /// Clears the password input field.
+    /// </summary>
     public void ClearPassword()
     {
         var passwordField = this.driver.FindElement(By.CssSelector(PasswordFieldSelector));
-        if (!string.IsNullOrEmpty(passwordField.GetAttribute("value")))
-        {
-            passwordField.SendKeys(Keys.Control + "a" + Keys.Delete);
-        }
+
+        passwordField.ClearBySelectAndDelete();
 
         _ = new WebDriverWait(this.driver, TimeSpan.FromSeconds(5))
             .Until(d => string.IsNullOrEmpty(this.GetPassword())); // Wait until the field is cleared
     }
 
+    /// <summary>
+    /// Clicks the login button expecting to be redirected to the inventory page.
+    /// </summary>
+    /// <returns>Instance of <see cref="InventoryPageObject"/> if login is successful</returns>
+    /// <exception cref="InvalidOperationException">Thrown if login fails or does not redirect to the inventory page</exception>
     public InventoryPageObject LoginExpectSuccess()
     {
         var loginButton = this.driver.FindElement(By.CssSelector(LoginButtonSelector));
@@ -86,6 +114,9 @@ public class LoginPageObject
             : throw new InvalidOperationException("Login failed or did not redirect to inventory page");
     }
 
+    /// <summary>
+    /// Clicks the login button expecting a failure (e.g., missing credentials error).
+    /// </summary>
     public void LoginExpectFailure()
     {
         var loginButton = this.driver.FindElement(By.CssSelector(LoginButtonSelector));
@@ -99,6 +130,11 @@ public class LoginPageObject
         actions.Perform();
     }
 
+    /// <summary>
+    /// Retrieves the error message displayed on the login page.
+    /// If error display element is not found, returns null.
+    /// </summary>
+    /// <returns>Error message text if present, otherwise null</returns>
     public string? GetErrorMessage()
     {
         try
