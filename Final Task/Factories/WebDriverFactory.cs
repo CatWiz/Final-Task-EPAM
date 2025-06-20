@@ -1,4 +1,5 @@
 ﻿using FinalTask.Config;
+using FinalTask.Tests;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 
@@ -8,11 +9,11 @@ public static class WebDriverFactory
 {
     private static readonly Uri RemoteWebDriverUrl = new(TestsConfig.SeleniumGridUrl);
 
-    public static IWebDriver GetDriver(Func<DriverOptions> optionsFactory, bool maximize)
+    public static IWebDriver GetDriver(BrowserOptions browserOptions)
     {
-        var options = optionsFactory.Invoke();
-        var remoteDriver = new RemoteWebDriver(RemoteWebDriverUrl, options.ToCapabilities());
-        if (maximize)
+        var capabilities = browserOptions.DriverOptions.ToCapabilities();
+        var remoteDriver = new RemoteWebDriver(RemoteWebDriverUrl, capabilities);
+        if (browserOptions.Maximize)
         {
             remoteDriver.Manage().Window.Maximize();
         }

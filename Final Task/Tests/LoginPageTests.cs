@@ -3,9 +3,6 @@ using FinalTask.Factories;
 using FinalTask.PageObjects;
 using FluentAssertions;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Edge;
-using OpenQA.Selenium.Firefox;
 
 namespace FinalTask.Tests;
 
@@ -14,30 +11,23 @@ public class LoginPageTests : IDisposable
 {
     private IWebDriver? _driver;
 
-    public static IEnumerable<(Func<DriverOptions>, bool)> TestCases
+    public static IEnumerable<object[]> TestCases
     {
         get
         {
-            yield return (() => new ChromeOptions(), true);
-            yield return (() => new ChromeOptions(), false);
-            yield return (() =>
-            {
-                var options = new ChromeOptions();
-                options.AddArgument("--headless=new");
-                return options;
-            }, true);
+            yield return [BrowserOptionsRepository.ChromeDefault];
+            yield return [BrowserOptionsRepository.FirefoxDefault];
+            yield return [BrowserOptionsRepository.EdgeDefault];
 
-            yield return (() => new FirefoxOptions(), true);
-            yield return (() => new FirefoxOptions(), false);
-
-            yield return (() => new EdgeOptions(), true);
-            yield return (() => new EdgeOptions(), false);
+            yield return [BrowserOptionsRepository.ChromeHeadless];
+            yield return [BrowserOptionsRepository.FirefoxHeadless];
+            yield return [BrowserOptionsRepository.EdgeHeadless];
         }
     }
 
-    private void InitializeDriver(Func<DriverOptions> options, bool maximize)
+    private void InitializeDriver(BrowserOptions options)
     {
-        this._driver = WebDriverFactory.GetDriver(options, maximize);
+        this._driver = WebDriverFactory.GetDriver(options);
         this._driver.Navigate().GoToUrl(TestsConfig.BaseUrl);
     }
 
@@ -51,9 +41,9 @@ public class LoginPageTests : IDisposable
 
     [TestMethod]
     [DynamicData(nameof(TestCases), DynamicDataSourceType.Property)]
-    public void LoginAfterClearingCredentialsShouldShowUsernameMissingError(Func<DriverOptions> options, bool maximize)
+    public void LoginAfterClearingCredentialsShouldShowUsernameMissingError(BrowserOptions options)
     {
-        this.InitializeDriver(options, maximize);
+        this.InitializeDriver(options);
 
         var loginPage = new LoginPageObject(this._driver ?? throw new InvalidOperationException("Driver not initialized"));
 
@@ -75,9 +65,9 @@ public class LoginPageTests : IDisposable
 
     [TestMethod]
     [DynamicData(nameof(TestCases), DynamicDataSourceType.Property)]
-    public void LoginAfterClearingPasswordShouldShowPasswordMissingError(Func<DriverOptions> options, bool maximize)
+    public void LoginAfterClearingPasswordShouldShowPasswordMissingError(BrowserOptions options)
     {
-        this.InitializeDriver(options, maximize);
+        this.InitializeDriver(options);
 
         var loginPage = new LoginPageObject(this._driver ?? throw new InvalidOperationException("Driver not initialized"));
 
@@ -98,9 +88,9 @@ public class LoginPageTests : IDisposable
 
     [TestMethod]
     [DynamicData(nameof(TestCases), DynamicDataSourceType.Property)]
-    public void LoginWithValidCredentialsShouldRedirectToInventoryPage(Func<DriverOptions> options, bool maximize)
+    public void LoginWithValidCredentialsShouldRedirectToInventoryPage(BrowserOptions options)
     {
-        this.InitializeDriver(options, maximize);
+        this.InitializeDriver(options);
 
         var loginPage = new LoginPageObject(this._driver ?? throw new InvalidOperationException("Driver not initialized"));
 
