@@ -16,33 +16,17 @@ public enum WebDriverType
 
 public static class WebDriverFactory
 {
-    private static readonly ThreadLocal<IWebDriver> LocalDriver = new();
     private static readonly Uri RemoteWebDriverUrl = new(TestsConfig.SeleniumGridUrl);
 
-    public static IWebDriver GetDriver(WebDriverType type, Func<DriverOptions>? optionsFactory = null)
+    public static IWebDriver GetDriver(Func<DriverOptions> optionsFactory, bool maximize)
     {
-        if (LocalDriver.Value is not null)
-        {
-            return LocalDriver.Value;
-        }
-
-        DriverOptions options = type switch
-        {
-            WebDriverType.Chrome => new ChromeOptions(),
-            WebDriverType.Firefox => new FirefoxOptions(),
-            WebDriverType.Edge => new EdgeOptions(),
-            _ => throw new ArgumentOutOfRangeException(nameof(type))
-        };
-
-        if (optionsFactory is not null)
-        {
-            options = optionsFactory.Invoke();
-        }
-
+        var options = optionsFactory.Invoke();
         var remoteDriver = new RemoteWebDriver(RemoteWebDriverUrl, options.ToCapabilities());
-        remoteDriver.Manage().Window.Maximize();
+        if (maximize)
+        {
+            remoteDriver.Manage().Window.Maximize();
+        }
 
-        LocalDriver.Value = remoteDriver;
-        return LocalDriver.Value;
+        return remoteDriver;
     }
 }
