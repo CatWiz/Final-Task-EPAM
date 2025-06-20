@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
@@ -8,7 +7,6 @@ using BrowserType = FinalTask.Factories.BrowserOptionsBuilder.BrowserType;
 
 namespace FinalTask.Factories;
 
-[DebuggerDisplay("{BrowserType}")]
 public class BrowserOptions
 {
     public BrowserType BrowserType
