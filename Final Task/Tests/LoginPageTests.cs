@@ -67,16 +67,16 @@ public class LoginPageTests : IDisposable
         loginPage.EnterUsername(username);
         loginPage.EnterPassword(password);
 
-        this.Logger.Information("Entered username {username}, current value: {CurrentUsername}",
+        this.Logger.Verbose("Entered username {username}, current value: {CurrentUsername}",
             username, loginPage.GetUsername());
-        this.Logger.Information("Entered password {password}, current value: {CurrentPassword}",
+        this.Logger.Verbose("Entered password {password}, current value: {CurrentPassword}",
             password, loginPage.GetPassword());
 
         loginPage.ClearUsername();
         loginPage.ClearPassword();
 
-        this.Logger.Information("Cleared username, current value: {CurrentUsername}", loginPage.GetUsername());
-        this.Logger.Information("Cleared password, current value: {CurrentPassword}", loginPage.GetPassword());
+        this.Logger.Verbose("Cleared username, current value: {CurrentUsername}", loginPage.GetUsername());
+        this.Logger.Verbose("Cleared password, current value: {CurrentPassword}", loginPage.GetPassword());
 
         loginPage.LoginExpectFailure();
 
@@ -108,14 +108,14 @@ public class LoginPageTests : IDisposable
         loginPage.EnterUsername(username);
         loginPage.EnterPassword(password);
 
-        this.Logger.Information("Entered username {username}, current value: {CurrentUsername}",
+        this.Logger.Verbose("Entered username {username}, current value: {CurrentUsername}",
             username, loginPage.GetUsername());
-        this.Logger.Information("Entered password {password}, current value: {CurrentPassword}",
+        this.Logger.Verbose("Entered password {password}, current value: {CurrentPassword}",
             password, loginPage.GetPassword());
 
         loginPage.ClearPassword();
 
-        this.Logger.Information("Cleared password, current value: {CurrentPassword}", loginPage.GetPassword());
+        this.Logger.Verbose("Cleared password, current value: {CurrentPassword}", loginPage.GetPassword());
 
         loginPage.LoginExpectFailure();
 
@@ -147,9 +147,9 @@ public class LoginPageTests : IDisposable
         loginPage.EnterUsername(username);
         loginPage.EnterPassword(password);
 
-        this.Logger.Information("Entered username {username}, current value: {CurrentUsername}",
+        this.Logger.Verbose("Entered username {username}, current value: {CurrentUsername}",
             username, loginPage.GetUsername());
-        this.Logger.Information("Entered password {password}, current value: {CurrentPassword}",
+        this.Logger.Verbose("Entered password {password}, current value: {CurrentPassword}",
             password, loginPage.GetPassword());
 
         _ = loginPage.LoginExpectSuccess();
