@@ -20,17 +20,19 @@
         <PackageReference Include="FluentAssertions" Version="8.3.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.6" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.6" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0"/>
-        <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.12.6"/>
-        <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="1.4.3"/>
-        <PackageReference Include="MSTest" Version="3.6.4"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+        <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.12.6" />
+        <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="1.4.3" />
+        <PackageReference Include="MSTest" Version="3.6.4" />
         <PackageReference Include="Selenium.WebDriver" Version="4.33.0" />
         <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="137.0.7151.11900" />
         <PackageReference Include="Selenium.WebDriver.MSEdgeDriver" Version="137.0.3296.16-pre" />
+        <PackageReference Include="Serilog" Version="4.3.0" />
+        <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting"/>
+        <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
     </ItemGroup>
 
     <ItemGroup>
