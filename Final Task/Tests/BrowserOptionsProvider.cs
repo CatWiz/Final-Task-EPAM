@@ -1,43 +1,43 @@
 using FinalTask.Factories;
-using BrowserType = FinalTask.Factories.BrowserOptionsBuilder.BrowserType;
+using FinalTask.Factories.BrowserOptionsBuildStrategies;
 
 namespace FinalTask.Tests;
 
 public static class BrowserOptionsProvider
 {
     public static BrowserOptions ChromeHeadless => BrowserOptionsBuilder.Create()
-        .ForBrowser(BrowserType.Chrome)
+        .WithBuildStrategy(new ChromeOptionsBuildStrategy())
         .WithHeadless()
         .WithMaximizeWindow()
         .Build();
 
     public static BrowserOptions FirefoxHeadless => BrowserOptionsBuilder.Create()
-        .ForBrowser(BrowserType.Firefox)
+        .WithBuildStrategy(new FirefoxOptionsBuildStrategy())
         .WithHeadless()
         .WithMaximizeWindow()
         .Build();
 
     public static BrowserOptions EdgeHeadless => BrowserOptionsBuilder.Create()
-        .ForBrowser(BrowserType.Edge)
+        .WithBuildStrategy(new EdgeOptionsBuildStrategy())
         .WithHeadless()
         .WithMaximizeWindow()
         .Build();
 
     public static BrowserOptions ChromeHeadlessTiny => BrowserOptionsBuilder.Create()
-        .ForBrowser(BrowserType.Chrome)
+        .WithBuildStrategy(new ChromeOptionsBuildStrategy())
         .WithHeadless()
-        .AddArgument("--window-size=800,600")
+        .WithWindowSize(800, 600)
         .Build();
 
     public static BrowserOptions FirefoxHeadlessTiny => BrowserOptionsBuilder.Create()
-        .ForBrowser(BrowserType.Firefox)
+        .WithBuildStrategy(new FirefoxOptionsBuildStrategy())
         .WithHeadless()
-        .AddArgument("--window-size=800,600")
+        .WithWindowSize(800, 600)
         .Build();
 
     public static BrowserOptions EdgeHeadlessTiny => BrowserOptionsBuilder.Create()
-        .ForBrowser(BrowserType.Edge)
+        .WithBuildStrategy(new EdgeOptionsBuildStrategy())
         .WithHeadless()
-        .AddArgument("--window-size=800,600")
+        .WithWindowSize(800, 600)
         .Build();
 }

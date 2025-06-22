@@ -12,20 +12,8 @@ public class BrowserOptions
     public required bool Maximize { get; init; }
 
     /// <summary>
-    /// String representation of command line arguments for the browser.
-    /// Used for logging.
+    /// Context object from which the browser options were built.
+    /// Used for logging purposes.
     /// </summary>
-    public required string Arguments { get; init; }
-
-    /// <summary>
-    /// String representation of browser preferences.
-    /// Used for logging.
-    /// </summary>
-    public required string Preferences { get; init; }
-
-    /// <summary>
-    /// String representation of additional browser options.
-    /// Used for logging.
-    /// </summary>
-    public required string AdditionalOptions { get; init; }
+    public BrowserOptionsContext? Context { get; init; }
 }
