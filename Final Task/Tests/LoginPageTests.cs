@@ -15,7 +15,7 @@ public class LoginPageTests : IDisposable
     private IWebDriver? _driver;
     private readonly TestContext _testContext;
 
-    public static IEnumerable<object[]> TestCases
+    public static IEnumerable<object[]> BrowserOptions
     {
         get
         {
@@ -55,8 +55,8 @@ public class LoginPageTests : IDisposable
     }
 
     [TestMethod]
-    [DynamicData(nameof(TestCases), DynamicDataSourceType.Property)]
-    public void LoginAfterClearingCredentialsShouldShowUsernameMissingError(BrowserOptions options)
+    [DynamicData(nameof(BrowserOptions), DynamicDataSourceType.Property)]
+    public void Login_WithoutUsername_ShowsUsernameRequiredError(BrowserOptions options)
     {
         this.InitializeDriver(options);
 
@@ -95,8 +95,8 @@ public class LoginPageTests : IDisposable
     }
 
     [TestMethod]
-    [DynamicData(nameof(TestCases), DynamicDataSourceType.Property)]
-    public void LoginAfterClearingPasswordShouldShowPasswordMissingError(BrowserOptions options)
+    [DynamicData(nameof(BrowserOptions), DynamicDataSourceType.Property)]
+    public void Login_WithoutPassword_ShowsPasswordRequiredError(BrowserOptions options)
     {
         this.InitializeDriver(options);
 
@@ -134,8 +134,8 @@ public class LoginPageTests : IDisposable
     }
 
     [TestMethod]
-    [DynamicData(nameof(TestCases), DynamicDataSourceType.Property)]
-    public void LoginWithValidCredentialsShouldRedirectToInventoryPage(BrowserOptions options)
+    [DynamicData(nameof(BrowserOptions), DynamicDataSourceType.Property)]
+    public void Login_WithValidCredentials_RedirectsToInventoryPage(BrowserOptions options)
     {
         this.InitializeDriver(options);
 

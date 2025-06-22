@@ -8,7 +8,8 @@ public static class IWebElementExtensions
 {
     /// <summary>
     /// Clears the input field by selecting all text and deleting it.
-    /// This should be used in place of <see cref="IWebElement.Clear()"/>> to mimic the way a real user would clear the field.
+    /// This should be used in place of <see cref="IWebElement.Clear()"/>>
+    /// to ensure that input events are triggered for that input field.
     /// </summary>
     /// <param name="element">Input element to clear</param>
     /// <exception cref="ArgumentNullException">Thrown if the element is null</exception>

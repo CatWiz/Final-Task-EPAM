@@ -6,9 +6,12 @@ namespace FinalTask.Logging;
 
 public static class LoggerFactory
 {
-    private static readonly ThreadLocal<ILogger> _localLogger = new();
-    private static readonly DateTime Now = DateTime.Now;
-    private static int ThreadIndex = 0;
+    private static readonly ThreadLocal<ILogger> _threadLocalLogger = new();
+
+    // Used as for specifying date and time in log file names
+    // Should be static to ensure consistent date/time is used across all threads
+    private static readonly DateTime InitTime = DateTime.Now;
+    private static int NextThreadIndex = 0;
     private static readonly Dictionary<int, int> ThreadIdToIndex = [];
 
     /// <summary>
@@ -20,8 +23,7 @@ public static class LoggerFactory
         int threadId = Environment.CurrentManagedThreadId;
         if (!ThreadIdToIndex.TryGetValue(threadId, out int index))
         {
-            index = ThreadIndex++;
-            ThreadIdToIndex[threadId] = index;
+            ThreadIdToIndex[threadId] = NextThreadIndex++;
         }
         return index;
     }
@@ -34,14 +36,14 @@ public static class LoggerFactory
     /// <returns>Logger instance</returns>
     public static ILogger GetLogger()
     {
-        if (_localLogger.Value is not null)
+        if (_threadLocalLogger.Value is not null)
         {
-            return _localLogger.Value;
+            return _threadLocalLogger.Value;
         }
 
         string path = TestsConfig.LogOutputPath
-            .Replace("{Date}", Now.ToString("yyyyMMdd"))
-            .Replace("{Time}", Now.ToString("HHmmss"))
+            .Replace("{Date}", InitTime.ToString("yyyyMMdd"))
+            .Replace("{Time}", InitTime.ToString("HHmmss"))
             .Replace("{ThreadIdx}", GetCurrentThreadIndex().ToString());
 
         var logLevel = Enum.Parse<LogEventLevel>(TestsConfig.LogOutputLevel, true);
@@ -51,7 +53,7 @@ public static class LoggerFactory
             .WriteTo.File(path, rollingInterval: RollingInterval.Infinite)
             .CreateLogger();
 
-        _localLogger.Value = logger;
-        return _localLogger.Value;
+        _threadLocalLogger.Value = logger;
+        return _threadLocalLogger.Value;
     }
 }
