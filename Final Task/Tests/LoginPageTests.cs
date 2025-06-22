@@ -1,7 +1,6 @@
 using FinalTask.Config;
 using FinalTask.Extensions;
 using FinalTask.Factories;
-using FinalTask.Logging;
 using FinalTask.PageObjects;
 using FluentAssertions;
 using OpenQA.Selenium;

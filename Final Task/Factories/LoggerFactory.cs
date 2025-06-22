@@ -2,7 +2,7 @@ using FinalTask.Config;
 using Serilog;
 using Serilog.Events;
 
-namespace FinalTask.Logging;
+namespace FinalTask.Factories;
 
 public static class LoggerFactory
 {
@@ -20,8 +20,8 @@ public static class LoggerFactory
     /// <returns>Thread index</returns>
     private static int GetCurrentThreadIndex()
     {
-        int threadId = Environment.CurrentManagedThreadId;
-        if (!_threadIdToIndex.TryGetValue(threadId, out int index))
+        var threadId = Environment.CurrentManagedThreadId;
+        if (!_threadIdToIndex.TryGetValue(threadId, out var index))
         {
             index = Interlocked.Increment(ref _nextThreadIndex);
             _threadIdToIndex[threadId] = index;
@@ -42,7 +42,7 @@ public static class LoggerFactory
             return _threadLocalLogger.Value;
         }
 
-        string path = TestsConfig.LogOutputPath
+        var path = TestsConfig.LogOutputPath
             .Replace("{Date}", _initTime.ToString("yyyyMMdd"))
             .Replace("{Time}", _initTime.ToString("HHmmss"))
             .Replace("{ThreadIdx}", GetCurrentThreadIndex().ToString());
