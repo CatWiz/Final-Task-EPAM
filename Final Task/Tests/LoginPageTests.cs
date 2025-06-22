@@ -1,4 +1,5 @@
 using FinalTask.Config;
+using FinalTask.Extensions;
 using FinalTask.Factories;
 using FinalTask.Logging;
 using FinalTask.PageObjects;
@@ -34,8 +35,7 @@ public class LoginPageTests : IDisposable
         this.Logger.Information("Initializing driver for {TestName} for {Browser} browser",
             this._testContext.TestName,
             options.DriverOptions.BrowserName);
-        this.Logger.Information("Browser capabilities: {Capabilities}",
-            options.DriverOptions.ToCapabilities());
+        this.Logger.LogBrowserOptions(options);
 
         this._driver = WebDriverFactory.GetDriver(options);
         this._driver.Navigate().GoToUrl(TestsConfig.BaseUrl);
