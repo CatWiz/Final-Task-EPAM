@@ -23,7 +23,8 @@ public static class LoggerFactory
         int threadId = Environment.CurrentManagedThreadId;
         if (!_threadIdToIndex.TryGetValue(threadId, out int index))
         {
-            _threadIdToIndex[threadId] = Interlocked.Increment(ref _nextThreadIndex);
+            index = Interlocked.Increment(ref _nextThreadIndex);
+            _threadIdToIndex[threadId] = index;
         }
         return index;
     }
