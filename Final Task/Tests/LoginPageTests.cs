@@ -141,8 +141,8 @@ public class LoginPageTests : IDisposable
 
         var loginPage = new LoginPage(this._driver ?? throw new InvalidOperationException("Driver not initialized"));
 
-        var username = "standard_user";
-        var password = "secret_sauce";
+        var username = loginPage.GetStandardAcceptedUsername();
+        var password = loginPage.GetAcceptedPassword();
 
         loginPage.EnterUsername(username);
         loginPage.EnterPassword(password);
