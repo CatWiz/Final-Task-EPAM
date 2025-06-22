@@ -1,4 +1,3 @@
-using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
@@ -12,6 +11,7 @@ public class BrowserOptionsBuilder
     private readonly Dictionary<string, object> _capabilities = [];
     private BrowserType _browserType = BrowserType.Chrome;
     private bool _headless = false;
+    private bool _maximize = false;
 
     public enum BrowserType
     {
@@ -87,15 +87,38 @@ public class BrowserOptionsBuilder
         };
     }
 
-    public DriverOptions Build()
+    public BrowserOptionsBuilder WithMaximizeWindow()
     {
-        return this._browserType switch
+        this._maximize = true;
+        return this;
+    }
+
+    public BrowserOptions Build()
+    {
+        var (args, preferences, capabilities) = this.GetOptionsAsString();
+        return new BrowserOptions
         {
-            BrowserType.Chrome => this.BuildChromeOptions(),
-            BrowserType.Firefox => this.BuildFirefoxOptions(),
-            BrowserType.Edge => this.BuildEdgeOptions(),
-            _ => throw new ArgumentException($"Unsupported browser type: {this._browserType}")
+            DriverOptions = this._browserType switch
+            {
+                BrowserType.Chrome => this.BuildChromeOptions(),
+                BrowserType.Firefox => this.BuildFirefoxOptions(),
+                BrowserType.Edge => this.BuildEdgeOptions(),
+                _ => throw new ArgumentException($"Unsupported browser type: {this._browserType}")
+            },
+            Maximize = this._maximize,
+            Arguments = args,
+            Preferences = preferences,
+            Capabilities = capabilities
         };
+    }
+
+    private (string args, string preferences, string capabilities) GetOptionsAsString()
+    {
+        var args = string.Join(" ", this._arguments);
+        var preferences = string.Join(", ", this._preferences.Select(kvp => $"{kvp.Key}={kvp.Value}"));
+        var capabilities = string.Join(", ", this._capabilities.Select(kvp => $"{kvp.Key}={kvp.Value}"));
+
+        return (args, preferences, capabilities);
     }
 
     private ChromeOptions BuildChromeOptions()
