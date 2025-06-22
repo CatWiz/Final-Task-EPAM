@@ -8,7 +8,7 @@ public static class LoggerFactory
 {
     private static readonly ThreadLocal<ILogger> _threadLocalLogger = new();
 
-    // Used as for specifying date and time in log file names
+    // Used for specifying date and time in log file names
     // Should be static to ensure consistent date/time is used across all threads
     private static readonly DateTime _initTime = DateTime.Now;
     private static int _nextThreadIndex = 0;
