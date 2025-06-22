@@ -24,8 +24,8 @@ public class BrowserOptions
     public required string Preferences { get; init; }
 
     /// <summary>
-    /// String representation of browser capabilities.
+    /// String representation of additional browser options.
     /// Used for logging.
     /// </summary>
-    public required string Capabilities { get; init; }
+    public required string AdditionalOptions { get; init; }
 }

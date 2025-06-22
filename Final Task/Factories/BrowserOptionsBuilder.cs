@@ -8,7 +8,7 @@ public class BrowserOptionsBuilder
 {
     private readonly List<string> _arguments = [];
     private readonly Dictionary<string, bool> _preferences = [];
-    private readonly Dictionary<string, object> _capabilities = [];
+    private readonly Dictionary<string, object> _additionalOptions = [];
     private BrowserType _browserType = BrowserType.Chrome;
     private bool _headless = false;
     private bool _maximize = false;
@@ -50,9 +50,9 @@ public class BrowserOptionsBuilder
         return this;
     }
 
-    public BrowserOptionsBuilder AddCapability(string key, object value)
+    public BrowserOptionsBuilder AddAdditionalOption(string key, object value)
     {
-        this._capabilities[key] = value;
+        this._additionalOptions[key] = value;
         return this;
     }
 
@@ -95,7 +95,7 @@ public class BrowserOptionsBuilder
 
     public BrowserOptions Build()
     {
-        var (args, preferences, capabilities) = this.GetOptionsAsString();
+        var (args, preferences, additionalOptions) = this.GetOptionsAsString();
         return new BrowserOptions
         {
             DriverOptions = this._browserType switch
@@ -108,17 +108,17 @@ public class BrowserOptionsBuilder
             Maximize = this._maximize,
             Arguments = args,
             Preferences = preferences,
-            Capabilities = capabilities
+            AdditionalOptions = additionalOptions
         };
     }
 
-    private (string args, string preferences, string capabilities) GetOptionsAsString()
+    private (string args, string preferences, string additionalOptions) GetOptionsAsString()
     {
         var args = string.Join(" ", this._arguments);
         var preferences = string.Join(", ", this._preferences.Select(kvp => $"{kvp.Key}={kvp.Value}"));
-        var capabilities = string.Join(", ", this._capabilities.Select(kvp => $"{kvp.Key}={kvp.Value}"));
+        var additionalOptions = string.Join(", ", this._additionalOptions.Select(kvp => $"{kvp.Key}={kvp.Value}"));
 
-        return (args, preferences, capabilities);
+        return (args, preferences, additionalOptions);
     }
 
     private ChromeOptions BuildChromeOptions()
@@ -137,9 +137,9 @@ public class BrowserOptionsBuilder
             options.AddUserProfilePreference(preference.Key, preference.Value);
         }
 
-        foreach (var capability in this._capabilities)
+        foreach (var additionalOption in this._additionalOptions)
         {
-            options.AddAdditionalOption(capability.Key, capability.Value);
+            options.AddAdditionalOption(additionalOption.Key, additionalOption.Value);
         }
 
         return options;
@@ -156,9 +156,9 @@ public class BrowserOptionsBuilder
 
         options.AddArguments(this._arguments);
 
-        foreach (var capability in this._capabilities)
+        foreach (var additionalOption in this._additionalOptions)
         {
-            options.AddAdditionalOption(capability.Key, capability.Value);
+            options.AddAdditionalOption(additionalOption.Key, additionalOption.Value);
         }
 
         // Firefox preferences are set differently
@@ -186,9 +186,9 @@ public class BrowserOptionsBuilder
             options.AddUserProfilePreference(preference.Key, preference.Value);
         }
 
-        foreach (var capability in this._capabilities)
+        foreach (var additionalOption in this._additionalOptions)
         {
-            options.AddAdditionalOption(capability.Key, capability.Value);
+            options.AddAdditionalOption(additionalOption.Key, additionalOption.Value);
         }
 
         return options;

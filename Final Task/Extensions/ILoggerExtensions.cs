@@ -7,7 +7,7 @@ public static class ILoggerExtensions
 {
     public static void LogBrowserOptions(this ILogger logger, BrowserOptions options)
     {
-        logger.Information("Browser capabilities: {Capabilities}", options.DriverOptions.ToCapabilities());
+        logger.Verbose("Browser capabilities: {Capabilities}", options.DriverOptions.ToCapabilities());
 
         if (!string.IsNullOrEmpty(options.Arguments))
         {
@@ -19,9 +19,9 @@ public static class ILoggerExtensions
             logger.Verbose("Browser preferences: {Preferences}", options.Preferences);
         }
 
-        if (!string.IsNullOrEmpty(options.Capabilities))
+        if (!string.IsNullOrEmpty(options.AdditionalOptions))
         {
-            logger.Verbose("Browser capabilities: {Capabilities}", options.Capabilities);
+            logger.Verbose("Browser additional options: {AdditionalOptions}", options.AdditionalOptions);
         }
     }
 }
