@@ -104,7 +104,8 @@ public class BrowserOptionsBuilder
             throw new InvalidOperationException("Browser strategy must be set before building options.");
         }
 
-        return this._strategy.BuildBrowserOptions(this._context);
+        var preparedContext = this._strategy.ConfigureArguments(this._context);
+        return this._strategy.BuildBrowserOptions(preparedContext);
     }
 
     public static BrowserOptionsBuilder Create() => new();

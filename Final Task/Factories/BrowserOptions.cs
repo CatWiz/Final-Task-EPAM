@@ -15,5 +15,5 @@ public class BrowserOptions
     /// Context object from which the browser options were built.
     /// Used for logging purposes.
     /// </summary>
-    public BrowserOptionsContext? Context { get; init; }
+    public required BrowserOptionsContext Context { get; init; }
 }

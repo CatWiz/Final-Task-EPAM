@@ -7,45 +7,33 @@ public static class ILoggerExtensions
 {
     public static void LogBrowserOptions(this ILogger logger, BrowserOptions options)
     {
-        logger.Verbose("Browser capabilities: {Capabilities}", options.DriverOptions.ToCapabilities());
+        logger.Information("Browser capabilities: {Capabilities}", options.DriverOptions.ToCapabilities());
 
         var context = options.Context;
-        if (context is null)
+        if (context.Maximize)
         {
-            logger.Verbose("Browser context is not set.");
-            return;
-        }
-
-        if (context.Incognito)
-        {
-            logger.Verbose("Browser is running in incognito mode.");
+            logger.Information("Browser window will be maximized.");
         }
         else
         {
-            logger.Verbose("Browser is not running in incognito mode.");
-        }
-
-        if (context.WindowSize is not null)
-        {
-            var (width, height) = context.WindowSize.Value;
-            logger.Verbose("Browser window size: {Width}x{Height}", width, height);
+            logger.Information("Browser window will not be maximized.");
         }
 
         if (context.Arguments.Count > 0)
         {
-            logger.Verbose("Browser arguments:\n\t{Arguments}", string.Join("\n\t", context.Arguments));
+            logger.Information("Browser arguments: {Arguments}", string.Join(" ", context.Arguments));
         }
 
         if (context.Preferences.Count > 0)
         {
-            logger.Verbose("Browser preferences:\n\t{Preferences}",
-                string.Join("\n\t", context.Preferences.Select(kvp => $"{kvp.Key}={kvp.Value}")));
+            logger.Information("Browser preferences: {Preferences}",
+                string.Join(" ", context.Preferences.Select(kvp => $"{kvp.Key}={kvp.Value}")));
         }
 
         if (context.AdditionalOptions.Count > 0)
         {
-            logger.Verbose("Browser additional options:\n\t{AdditionalOptions}",
-                string.Join("\n\t", context.AdditionalOptions.Select(kvp => $"{kvp.Key}={kvp.Value}")));
+            logger.Information("Browser additional options: {AdditionalOptions}",
+                string.Join(" ", context.AdditionalOptions.Select(kvp => $"{kvp.Key}={kvp.Value}")));
         }
     }
 }

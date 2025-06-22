@@ -4,25 +4,29 @@ namespace FinalTask.Factories.BrowserOptionsBuildStrategies;
 
 public class EdgeOptionsBuildStrategy : IBrowserOptionsBuildStrategy
 {
-    public BrowserOptions BuildBrowserOptions(BrowserOptionsContext context)
+    public BrowserOptionsContext ConfigureArguments(BrowserOptionsContext context)
     {
-        var options = new EdgeOptions();
-
         if (context.Headless)
         {
-            options.AddArgument("--headless=new");
+            context.Arguments.Add("--headless=new");
         }
 
         if (context.Incognito)
         {
-            options.AddArgument("--inprivate");
+            context.Arguments.Add("--inprivate");
         }
 
         if (context.WindowSize is not null)
         {
             var (width, height) = context.WindowSize.Value;
-            options.AddArgument($"--window-size={width},{height}");
+            context.Arguments.Add($"--window-size={width},{height}");
         }
+
+        return context;
+    }
+    public BrowserOptions BuildBrowserOptions(BrowserOptionsContext context)
+    {
+        var options = new EdgeOptions();
 
         options.AddArguments(context.Arguments);
 

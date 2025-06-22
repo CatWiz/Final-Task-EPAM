@@ -4,26 +4,30 @@ namespace FinalTask.Factories.BrowserOptionsBuildStrategies;
 
 public class FirefoxOptionsBuildStrategy : IBrowserOptionsBuildStrategy
 {
-    public BrowserOptions BuildBrowserOptions(BrowserOptionsContext context)
+    public BrowserOptionsContext ConfigureArguments(BrowserOptionsContext context)
     {
-        var options = new FirefoxOptions();
-
         if (context.Headless)
         {
-            options.AddArgument("-headless=new");
+            context.Arguments.Add("-headless=new");
         }
 
         if (context.Incognito)
         {
-            options.AddArgument("-private");
+            context.Arguments.Add("-private");
         }
 
         if (context.WindowSize is not null)
         {
             var (width, height) = context.WindowSize.Value;
-            options.AddArgument($"-width={width}");
-            options.AddArgument($"-height={height}");
+            context.Arguments.Add($"-width={width}");
+            context.Arguments.Add($"-height={height}");
         }
+
+        return context;
+    }
+    public BrowserOptions BuildBrowserOptions(BrowserOptionsContext context)
+    {
+        var options = new FirefoxOptions();
 
         options.AddArguments(context.Arguments);
 
