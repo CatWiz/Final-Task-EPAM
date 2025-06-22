@@ -3,7 +3,7 @@ using BrowserType = FinalTask.Factories.BrowserOptionsBuilder.BrowserType;
 
 namespace FinalTask.Tests;
 
-public static class BrowserOptionsRepository
+public static class BrowserOptionsProvider
 {
     public static BrowserOptions ChromeHeadless => new()
     {

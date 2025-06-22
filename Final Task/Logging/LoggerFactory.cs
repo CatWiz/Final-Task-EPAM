@@ -10,9 +10,9 @@ public static class LoggerFactory
 
     // Used as for specifying date and time in log file names
     // Should be static to ensure consistent date/time is used across all threads
-    private static readonly DateTime InitTime = DateTime.Now;
-    private static int NextThreadIndex = 0;
-    private static readonly Dictionary<int, int> ThreadIdToIndex = [];
+    private static readonly DateTime _initTime = DateTime.Now;
+    private static int _nextThreadIndex = 0;
+    private static readonly Dictionary<int, int> _threadIdToIndex = [];
 
     /// <summary>
     /// Gets the incremental index of the current thread based on its ID.
@@ -21,9 +21,9 @@ public static class LoggerFactory
     private static int GetCurrentThreadIndex()
     {
         int threadId = Environment.CurrentManagedThreadId;
-        if (!ThreadIdToIndex.TryGetValue(threadId, out int index))
+        if (!_threadIdToIndex.TryGetValue(threadId, out int index))
         {
-            ThreadIdToIndex[threadId] = NextThreadIndex++;
+            _threadIdToIndex[threadId] = _nextThreadIndex++;
         }
         return index;
     }
@@ -42,8 +42,8 @@ public static class LoggerFactory
         }
 
         string path = TestsConfig.LogOutputPath
-            .Replace("{Date}", InitTime.ToString("yyyyMMdd"))
-            .Replace("{Time}", InitTime.ToString("HHmmss"))
+            .Replace("{Date}", _initTime.ToString("yyyyMMdd"))
+            .Replace("{Time}", _initTime.ToString("HHmmss"))
             .Replace("{ThreadIdx}", GetCurrentThreadIndex().ToString());
 
         var logLevel = Enum.Parse<LogEventLevel>(TestsConfig.LogOutputLevel, true);

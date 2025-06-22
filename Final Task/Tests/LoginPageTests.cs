@@ -19,13 +19,13 @@ public class LoginPageTests : IDisposable
     {
         get
         {
-            yield return [BrowserOptionsRepository.ChromeHeadless];
-            yield return [BrowserOptionsRepository.FirefoxHeadless];
-            yield return [BrowserOptionsRepository.EdgeHeadless];
+            yield return [BrowserOptionsProvider.ChromeHeadless];
+            yield return [BrowserOptionsProvider.FirefoxHeadless];
+            yield return [BrowserOptionsProvider.EdgeHeadless];
 
-            yield return [BrowserOptionsRepository.ChromeHeadlessTiny];
-            yield return [BrowserOptionsRepository.FirefoxHeadlessTiny];
-            yield return [BrowserOptionsRepository.EdgeHeadlessTiny];
+            yield return [BrowserOptionsProvider.ChromeHeadlessTiny];
+            yield return [BrowserOptionsProvider.FirefoxHeadlessTiny];
+            yield return [BrowserOptionsProvider.EdgeHeadlessTiny];
         }
     }
 
@@ -60,7 +60,7 @@ public class LoginPageTests : IDisposable
     {
         this.InitializeDriver(options);
 
-        var loginPage = new LoginPageObject(this._driver ?? throw new InvalidOperationException("Driver not initialized"));
+        var loginPage = new LoginPage(this._driver ?? throw new InvalidOperationException("Driver not initialized"));
         var username = "asdf";
         var password = "zxcv";
 
@@ -100,7 +100,7 @@ public class LoginPageTests : IDisposable
     {
         this.InitializeDriver(options);
 
-        var loginPage = new LoginPageObject(this._driver ?? throw new InvalidOperationException("Driver not initialized"));
+        var loginPage = new LoginPage(this._driver ?? throw new InvalidOperationException("Driver not initialized"));
 
         var username = "asdf";
         var password = "zxcv";
@@ -139,7 +139,7 @@ public class LoginPageTests : IDisposable
     {
         this.InitializeDriver(options);
 
-        var loginPage = new LoginPageObject(this._driver ?? throw new InvalidOperationException("Driver not initialized"));
+        var loginPage = new LoginPage(this._driver ?? throw new InvalidOperationException("Driver not initialized"));
 
         var username = "standard_user";
         var password = "secret_sauce";

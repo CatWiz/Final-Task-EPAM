@@ -6,7 +6,7 @@ using OpenQA.Selenium.Support.UI;
 
 namespace FinalTask.PageObjects;
 
-public class LoginPageObject
+public class LoginPage
 {
     private readonly IWebDriver driver;
     private const string UsernameFieldSelector = "input[type='text']#user-name.form_input";
@@ -19,7 +19,7 @@ public class LoginPageObject
     private IWebElement LoginButton => this.driver.FindElement(By.CssSelector(LoginButtonSelector));
     private IWebElement ErrorMessageDisplay => this.driver.FindElement(By.CssSelector(ErrorMessageSelector));
 
-    public LoginPageObject(IWebDriver driver)
+    public LoginPage(IWebDriver driver)
     {
         this.driver = driver;
 
@@ -35,7 +35,7 @@ public class LoginPageObject
     /// <param name="username">Username to enter</param>
     public void EnterUsername(string username)
     {
-        this.UsernameField.ClearBySelectAndDelete();
+        this.ClearUsername();
         this.UsernameField.SendKeys(username);
     }
 
@@ -66,7 +66,7 @@ public class LoginPageObject
     /// <param name="password">Password to enter</param>
     public void EnterPassword(string password)
     {
-        this.PasswordField.ClearBySelectAndDelete();
+        this.ClearPassword();
         this.PasswordField.SendKeys(password);
     }
 
@@ -94,16 +94,16 @@ public class LoginPageObject
     /// <summary>
     /// Clicks the login button expecting to be redirected to the inventory page.
     /// </summary>
-    /// <returns>Instance of <see cref="InventoryPageObject"/> if login is successful</returns>
+    /// <returns>Instance of <see cref="InventoryPage"/> if login is successful</returns>
     /// <exception cref="InvalidOperationException">Thrown if login fails or does not redirect to the inventory page</exception>
-    public InventoryPageObject LoginExpectSuccess()
+    public InventoryPage LoginExpectSuccess()
     {
         this.LoginButton.Click();
 
         _ = new WebDriverWait(this.driver, TimeSpan.FromSeconds(10))
             .Until(d => d.Url.Contains("/inventory.html"));
 
-        return new InventoryPageObject(this.driver);
+        return new InventoryPage(this.driver);
     }
 
     /// <summary>
