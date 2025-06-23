@@ -9,6 +9,9 @@ namespace FinalTask.PageObjects;
 public class LoginPage
 {
     private readonly IWebDriver driver;
+
+    #region Selectors and getters
+
     private const string UsernameFieldSelector = "input[type='text']#user-name.form_input";
     private const string PasswordFieldSelector = "input[type='password']#password.form_input";
     private const string LoginButtonSelector = "input[type='submit']#login-button.submit-button";
@@ -22,6 +25,8 @@ public class LoginPage
     private IWebElement ErrorMessageDisplay => this.driver.FindElement(By.CssSelector(ErrorMessageSelector));
     private IWebElement AcceptedUsernamesList => this.driver.FindElement(By.CssSelector(AcceptedUsernamesSelector));
     private IWebElement AcceptedPasswordsList => this.driver.FindElement(By.CssSelector(AcceptedPasswordsSelector));
+
+    #endregion
 
     public LoginPage(IWebDriver driver)
     {

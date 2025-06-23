@@ -2,7 +2,7 @@ using FinalTask.Factories.BrowserOptionsBuildStrategies;
 
 namespace FinalTask.Factories;
 
-public class BrowserOptionsBuilder
+public sealed class BrowserOptionsBuilder
 {
     private readonly BrowserOptionsContext _context = new();
     private IBrowserOptionsBuildStrategy? _strategy;

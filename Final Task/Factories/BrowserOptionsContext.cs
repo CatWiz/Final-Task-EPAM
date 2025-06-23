@@ -1,6 +1,9 @@
 namespace FinalTask.Factories;
 
-public class BrowserOptionsContext
+/// <summary>
+/// Represents intermediate state for <see cref="BrowserOptionsBuilder"/>
+/// </summary>
+public record class BrowserOptionsContext
 {
     public List<string> Arguments { get; } = [];
     public Dictionary<string, bool> Preferences { get; } = [];

@@ -5,6 +5,11 @@ namespace FinalTask.Extensions;
 
 public static class ILoggerExtensions
 {
+    /// <summary>
+    /// Logs browser options, capabilities, and command line arguments, as well as any additional options.
+    /// </summary>
+    /// <param name="logger"></param>
+    /// <param name="options"></param>
     public static void LogBrowserOptions(this ILogger logger, BrowserOptions options)
     {
         logger.Information("Browser capabilities: {Capabilities}", options.DriverOptions.ToCapabilities());

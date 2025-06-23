@@ -30,7 +30,7 @@ public static class LoggerFactory
     }
 
     /// <summary>
-    /// Creates or retrieves a logger instance for the current thread.
+    /// Creates or retrieves a logger instance specific to the current thread.
     /// The logger is configured based on settings in appsettings.json file.
     /// The log file path includes thread index to avoid conflicts when running tests in parallel.
     /// </summary>
