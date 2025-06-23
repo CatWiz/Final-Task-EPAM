@@ -8,7 +8,7 @@ public class FirefoxOptionsBuildStrategy : IBrowserOptionsBuildStrategy
     {
         if (context.Headless)
         {
-            context.Arguments.Add("-headless=new");
+            context.Arguments.Add("-headless");
         }
 
         if (context.Incognito)
