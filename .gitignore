@@ -19,6 +19,9 @@ mono_crash.*
 # Log files
 Logs/*
 
+# Local appsettings
+appsettings.local.json
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

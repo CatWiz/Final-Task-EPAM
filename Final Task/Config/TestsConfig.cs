@@ -6,6 +6,7 @@ public static class TestsConfig
 {
     private static readonly IConfigurationRoot ConfigRoot = new ConfigurationBuilder()
         .AddJsonFile("appsettings.json")
+        .AddJsonFile("appsettings.local.json", optional: true)
         .Build();
 
     private static string GetValue(string key)
