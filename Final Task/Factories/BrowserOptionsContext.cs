@@ -12,4 +12,5 @@ public record class BrowserOptionsContext
     public bool Maximize { get; set; } = false;
     public bool Incognito { get; set; } = false;
     public (int Width, int Height)? WindowSize { get; set; } = null;
+    public string? DisplayName { get; set; }
 }

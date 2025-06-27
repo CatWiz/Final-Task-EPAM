@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using FinalTask.Config;
 using Serilog;
 using Serilog.Events;
@@ -12,7 +13,7 @@ public static class LoggerFactory
     // Should be static to ensure consistent date/time is used across all threads
     private static readonly DateTime _initTime = DateTime.Now;
     private static int _nextThreadIndex = 0;
-    private static readonly Dictionary<int, int> _threadIdToIndex = [];
+    private static readonly ConcurrentDictionary<int, int> _threadIdToIndex = [];
 
     /// <summary>
     /// Gets the incremental index of the current thread based on its ID.

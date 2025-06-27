@@ -97,6 +97,16 @@ public sealed class BrowserOptionsBuilder
         return this;
     }
 
+    public BrowserOptionsBuilder WithDisplayName(string displayName)
+    {
+        if (string.IsNullOrWhiteSpace(displayName))
+        {
+            throw new ArgumentException("Display name cannot be null or empty.", nameof(displayName));
+        }
+        this._context.DisplayName = displayName;
+        return this;
+    }
+
     public BrowserOptions Build()
     {
         if (this._strategy == null)

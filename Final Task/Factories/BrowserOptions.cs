@@ -16,4 +16,14 @@ public class BrowserOptions
     /// Used for logging purposes.
     /// </summary>
     public required BrowserOptionsContext Context { get; init; }
+
+    public string? DisplayName { get; init; }
+
+    public override string ToString()
+    {
+        return $"BrowserOptions: {this.DriverOptions.ToCapabilities()}, " +
+               $"Maximize: {this.Maximize}, " +
+               $"Headless: {this.Context.Headless}, " +
+               $"Incognito: {this.Context.Incognito}, ";
+    }
 }

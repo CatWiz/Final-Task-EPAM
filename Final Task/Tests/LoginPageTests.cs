@@ -1,3 +1,4 @@
+using System.Reflection;
 using FinalTask.Config;
 using FinalTask.Extensions;
 using FinalTask.Factories;
@@ -9,11 +10,13 @@ using Serilog;
 namespace FinalTask.Tests;
 
 [TestClass]
+[TestCategory("LoginPage")]
 public class LoginPageTests : IDisposable
 {
     private readonly ILogger Logger = LoggerFactory.GetLogger();
     private IWebDriver? _driver;
-    private readonly TestContext _testContext;
+
+    public TestContext TestContext;
 
     public static IEnumerable<object[]> BrowserOptions
     {
@@ -31,8 +34,12 @@ public class LoginPageTests : IDisposable
 
     private void InitializeDriver(BrowserOptions options)
     {
+        if (this.TestContext is not null && options.DisplayName is not null)
+        {
+            this.TestContext.Properties["DisplayName"] = $"{this.TestContext.TestName} ({options.DisplayName})";
+        }
         this.Logger.Information("Initializing driver for {TestName} for {Browser} browser",
-            this._testContext.TestName,
+            this.TestContext?.TestName,
             options.DriverOptions.BrowserName);
         this.Logger.LogBrowserOptions(options);
 
@@ -42,7 +49,13 @@ public class LoginPageTests : IDisposable
 
     public LoginPageTests(TestContext testContext)
     {
-        this._testContext = testContext;
+        this.TestContext = testContext;
+    }
+
+    public static string GetTestDisplayName(MethodInfo methodInfo, object[] args)
+    {
+        var options = (BrowserOptions)args[0];
+        return $"{methodInfo.Name} ({options.DisplayName})";
     }
 
     [TestCleanup]
@@ -53,8 +66,9 @@ public class LoginPageTests : IDisposable
         this._driver = null;
     }
 
-    [TestMethod]
-    [DynamicData(nameof(BrowserOptions), DynamicDataSourceType.Property)]
+    [DataTestMethod]
+    [TestCategory("EmptyLoginAndPassword")]
+    [DynamicData(nameof(BrowserOptions), DynamicDataSourceType.Property, DynamicDataDisplayName = nameof(GetTestDisplayName))]
     public void Login_WithoutUsername_ShowsUsernameRequiredError(BrowserOptions options)
     {
         this.InitializeDriver(options);
@@ -93,8 +107,9 @@ public class LoginPageTests : IDisposable
             .Should().Be("Epic sadface: Username is required", $"error message should indicate missing username, username: {loginPage.GetUsername()}, password: {loginPage.GetPassword()}");
     }
 
-    [TestMethod]
-    [DynamicData(nameof(BrowserOptions), DynamicDataSourceType.Property)]
+    [DataTestMethod]
+    [TestCategory("EmptyPassword")]
+    [DynamicData(nameof(BrowserOptions), DynamicDataSourceType.Property, DynamicDataDisplayName = nameof(GetTestDisplayName))]
     public void Login_WithoutPassword_ShowsPasswordRequiredError(BrowserOptions options)
     {
         this.InitializeDriver(options);
@@ -132,8 +147,9 @@ public class LoginPageTests : IDisposable
             .Should().Be("Epic sadface: Password is required", $"error message should indicate missing password, username: {loginPage.GetUsername()}, password: {loginPage.GetPassword()}");
     }
 
-    [TestMethod]
-    [DynamicData(nameof(BrowserOptions), DynamicDataSourceType.Property)]
+    [DataTestMethod]
+    [TestCategory("ValidLoginAndPassword")]
+    [DynamicData(nameof(BrowserOptions), DynamicDataSourceType.Property, DynamicDataDisplayName = nameof(GetTestDisplayName))]
     public void Login_WithValidCredentials_RedirectsToInventoryPage(BrowserOptions options)
     {
         this.InitializeDriver(options);

@@ -44,7 +44,8 @@ public class ChromeOptionsBuildStrategy : IBrowserOptionsBuildStrategy
         {
             DriverOptions = options,
             Maximize = context.Maximize,
-            Context = context
+            Context = context,
+            DisplayName = context.DisplayName
         };
     }
 }

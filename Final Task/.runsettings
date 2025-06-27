@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <RunConfiguration>
+    <ResultsDirectory>.\TestResults</ResultsDirectory>
+  </RunConfiguration>
+  <MSTest>
+    <Parallelize>
+      <Workers>0</Workers>
+      <Scope>MethodLevel</Scope>
+    </Parallelize>
+    <TestNameFormat>FullyQualifiedName</TestNameFormat>
+    <MapInconclusiveToFailed>false</MapInconclusiveToFailed>
+    <EnableBaseClassTestMethodsFromOtherAssemblies>false</EnableBaseClassTestMethodsFromOtherAssemblies>
+    <TestTimeout>60000</TestTimeout>
+  </MSTest>
+  <TestRunParameters>
+    <Parameter name="UseHierarchicalDisplay" value="true" />
+  </TestRunParameters>
+</RunSettings>
