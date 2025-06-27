@@ -1,3 +1,4 @@
+using System.Reflection;
 using FinalTask.Config;
 using FinalTask.Extensions;
 using FinalTask.Factories;
@@ -19,25 +20,49 @@ public class LoginPageTests : IDisposable
     {
         get
         {
-            yield return [BrowserOptionsProvider.ChromeHeadless];
-            yield return [BrowserOptionsProvider.FirefoxHeadless];
-            yield return [BrowserOptionsProvider.EdgeHeadless];
+            yield return [nameof(BrowserOptionsProvider.ChromeHeadless)];
+            yield return [nameof(BrowserOptionsProvider.FirefoxHeadless)];
+            yield return [nameof(BrowserOptionsProvider.EdgeHeadless)];
 
-            yield return [BrowserOptionsProvider.ChromeHeadlessTiny];
-            yield return [BrowserOptionsProvider.FirefoxHeadlessTiny];
-            yield return [BrowserOptionsProvider.EdgeHeadlessTiny];
+            yield return [nameof(BrowserOptionsProvider.ChromeHeadlessTiny)];
+            yield return [nameof(BrowserOptionsProvider.FirefoxHeadlessTiny)];
+            yield return [nameof(BrowserOptionsProvider.EdgeHeadlessTiny)];
         }
     }
 
-    private void InitializeDriver(BrowserOptions options)
+    private void InitializeDriver(string optionsName)
     {
-        this.Logger.Information("Initializing driver for {TestName} for {Browser} browser",
-            this._testContext.TestName,
-            options.DriverOptions.BrowserName);
-        this.Logger.LogBrowserOptions(options);
+        this.Logger.Information("Initializing with {options} options for {testName}",
+            optionsName,
+            this._testContext.TestName);
 
-        this._driver = WebDriverFactory.GetDriver(options);
-        this._driver.Navigate().GoToUrl(TestsConfig.BaseUrl);
+        var providerType = typeof(BrowserOptionsProvider);
+        var property = providerType.GetProperty(optionsName, BindingFlags.Public | BindingFlags.Static);
+        if (property is null)
+        {
+            this.Logger.Error("Could not find property {PropertyName} in {TypeName}",
+                optionsName, providerType.FullName);
+            throw new InvalidOperationException($"Could not find property {optionsName} in {providerType.FullName}");
+        }
+
+        try
+        {
+            var options = (BrowserOptions?)property.GetValue(null);
+            if (options is null)
+            {
+                this.Logger.Error("Property {PropertyName} returned null", optionsName);
+                throw new InvalidOperationException($"Property {optionsName} returned null");
+            }
+
+            this.Logger.LogBrowserOptions(options);
+            this._driver = WebDriverFactory.GetDriver(options);
+            this._driver.Navigate().GoToUrl(TestsConfig.BaseUrl);
+        }
+        catch (InvalidCastException ex)
+        {
+            this.Logger.Error(ex, "Failed to cast property {PropertyName} to BrowserOptions", optionsName);
+            throw new InvalidOperationException($"Failed to cast property {optionsName} to BrowserOptions", ex);
+        }
     }
 
     public LoginPageTests(TestContext testContext)
@@ -55,7 +80,7 @@ public class LoginPageTests : IDisposable
 
     [TestMethod]
     [DynamicData(nameof(BrowserOptions), DynamicDataSourceType.Property)]
-    public void Login_WithoutUsername_ShowsUsernameRequiredError(BrowserOptions options)
+    public void Login_WithoutUsername_ShowsUsernameRequiredError(string options)
     {
         this.InitializeDriver(options);
 
@@ -95,7 +120,7 @@ public class LoginPageTests : IDisposable
 
     [TestMethod]
     [DynamicData(nameof(BrowserOptions), DynamicDataSourceType.Property)]
-    public void Login_WithoutPassword_ShowsPasswordRequiredError(BrowserOptions options)
+    public void Login_WithoutPassword_ShowsPasswordRequiredError(string options)
     {
         this.InitializeDriver(options);
 
@@ -134,7 +159,7 @@ public class LoginPageTests : IDisposable
 
     [TestMethod]
     [DynamicData(nameof(BrowserOptions), DynamicDataSourceType.Property)]
-    public void Login_WithValidCredentials_RedirectsToInventoryPage(BrowserOptions options)
+    public void Login_WithValidCredentials_RedirectsToInventoryPage(string options)
     {
         this.InitializeDriver(options);
 
