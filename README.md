@@ -4,7 +4,7 @@ This repository implements a test suite for https://www.saucedemo.com/ as outlin
 
 This project uses appsettings.json for configuration. You can override settings locally using an `appsettings.local.json` file in project's root directory (`<root>/Final Task/`).
 
-This project uses Selenium Grid to run tests in parallel. In order to run the project, a URL to an active Selenium server must be specified in appsettings. By default, it tries to connect to `http://localhost:4444`, which is the default URL for a local Selenium Grid instance. Guide for setting up a local Grid instance: https://www.selenium.dev/documentation/grid/getting_started/.
+This project uses [Selenium Grid](https://www.selenium.dev/documentation/grid/getting_started/) to run tests in parallel. In order to run the project, a URL to an active Selenium server must be specified in appsettings. By default, it tries to connect to `http://localhost:4444`, which is the default URL for a local Selenium Grid instance.
 
 Logs output path and verbosity can also be specified in appsettings.json. By default, logs are written to the `Logs` directory within the current directory, which is usually in `<root>/Final Task/bin/Debug/net9.0/`. Verbosity level can be set to any of the [Serilog's verbosity levels](https://github.com/serilog/serilog/wiki/Configuration-Basics#minimum-level).
 
