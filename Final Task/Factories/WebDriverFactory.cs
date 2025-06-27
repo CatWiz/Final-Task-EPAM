@@ -1,4 +1,4 @@
-﻿using FinalTask.Config;
+using FinalTask.Config;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 
@@ -17,12 +17,22 @@ public static class WebDriverFactory
     public static IWebDriver GetDriver(BrowserOptions browserOptions)
     {
         var capabilities = browserOptions.DriverOptions.ToCapabilities();
-        var remoteDriver = new RemoteWebDriver(RemoteWebDriverUrl, capabilities);
-        if (browserOptions.Maximize)
+        try
         {
-            remoteDriver.Manage().Window.Maximize();
-        }
+            var remoteDriver = new RemoteWebDriver(RemoteWebDriverUrl, capabilities);
+            if (browserOptions.Maximize)
+            {
+                remoteDriver.Manage().Window.Maximize();
+            }
 
-        return remoteDriver;
+            return remoteDriver;
+        }
+        catch (WebDriverException ex)
+        {
+            throw new InvalidOperationException(
+                $"Failed to create RemoteWebDriver with capabilities: {capabilities}. " +
+                $"Ensure that the Selenium Grid is running at {RemoteWebDriverUrl}.",
+                ex);
+        }
     }
 }
