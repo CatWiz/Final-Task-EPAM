@@ -1,5 +1,29 @@
 This repository implements a test suite for https://www.saucedemo.com/ as outlined in final task description.
 
+## Setup
+
+This project uses appsettings.json for configuration. To override settings locally, an appsettings.local.json may be used.
+
+This project uses [Selenium Grid](https://www.selenium.dev/documentation/grid/getting_started/) to run tests in parallel. In order to run the project, a URL to an active Selenium server must be specified in appsettings. By default, it tries to connect to `https://localhost:4444`, which is the default URL for a local Selenium Grid instance.
+
+Logs output path may also be specified in appsettings.json. By default, logs are written to the `Logs` directory in current directory, which is usually in `bin\Debug\net9.0\`.
+
+Example config file:
+```json
+
+{
+  "BaseUrl": "https://www.saucedemo.com",
+  "Selenium": {
+    "GridUrl": "http://localhost:4444"
+  },
+
+  "Logs": {
+    "FilePath": "E:/FinalTask/Logs/log-{Date}-{Time}-{ThreadIdx}.log",
+    "Level": "Verbose"
+  }
+}
+```
+
 ## Task description
 
 Launch URL: https://www.saucedemo.com/
