@@ -179,9 +179,12 @@ public class LoginPageTests : IDisposable
         _ = loginPage.LoginExpectSuccess();
 
         this.Logger.Information("Login successful, current URL: {CurrentUrl}", this._driver.Url);
+        this.Logger.Information("Current page title: {PageTitle}", this._driver.Title);
 
         _ = this._driver.Url
             .Should().Be($"{TestsConfig.BaseUrl}/inventory.html", "login with valid credentials should redirect to the inventory page");
+        _ = this._driver.Title
+            .Should().Be("Swag Labs", "page title should be 'Swag Labs' after successful login");
     }
 
     public void Dispose()
