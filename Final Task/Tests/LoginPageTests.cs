@@ -21,29 +21,37 @@ public class LoginPageTests(TestContext testContext) : BaseTest(testContext), ID
         }
     }
 
+    private LoginPage _loginPage = null!;
+
+    [TestInitialize]
+    public override void TestInitialize()
+    {
+        base.TestInitialize();
+        this._loginPage = new LoginPage(this.Driver ?? throw new InvalidOperationException("Driver not initialized"));
+    }
+
     [TestMethod]
     [DynamicData(nameof(BrowserOptions), DynamicDataSourceType.Property)]
     public void Login_WithoutUsername_ShowsUsernameRequiredError(string options)
     {
-        var loginPage = new LoginPage(this.Driver ?? throw new InvalidOperationException("Driver not initialized"));
         var username = "asdf";
         var password = "zxcv";
 
-        loginPage.EnterUsername(username);
-        loginPage.EnterPassword(password);
+        this._loginPage.EnterUsername(username);
+        this._loginPage.EnterPassword(password);
 
         this.Logger.Verbose("Entered username {username}, current value: {CurrentUsername}",
-            username, loginPage.GetUsername());
+            username, this._loginPage.GetUsername());
         this.Logger.Verbose("Entered password {password}, current value: {CurrentPassword}",
-            password, loginPage.GetPassword());
+            password, this._loginPage.GetPassword());
 
-        loginPage.ClearUsername();
-        loginPage.ClearPassword();
+        this._loginPage.ClearUsername();
+        this._loginPage.ClearPassword();
 
-        this.Logger.Verbose("Cleared username, current value: {CurrentUsername}", loginPage.GetUsername());
-        this.Logger.Verbose("Cleared password, current value: {CurrentPassword}", loginPage.GetPassword());
+        this.Logger.Verbose("Cleared username, current value: {CurrentUsername}", this._loginPage.GetUsername());
+        this.Logger.Verbose("Cleared password, current value: {CurrentPassword}", this._loginPage.GetPassword());
 
-        loginPage.LoginExpectFailure();
+        this._loginPage.LoginExpectFailure();
 
         this.Logger.Information("Tried logging in with cleared credentials, current URL: {CurrentUrl}",
             this.Driver.Url);
@@ -51,36 +59,35 @@ public class LoginPageTests(TestContext testContext) : BaseTest(testContext), ID
         _ = this.Driver.Url.TrimEnd('/')
             .Should().Be(TestsConfig.BaseUrl, "login with no credentials should stay on the login page");
 
-        var errorMessage = loginPage.GetErrorMessage();
+        var errorMessage = this._loginPage.GetErrorMessage();
         this.Logger.Information("Verifying error message after login attempt, error message: {ErrorMessage}",
             errorMessage);
 
         _ = errorMessage
-            .Should().Be("Epic sadface: Username is required", $"error message should indicate missing username, username: {loginPage.GetUsername()}, password: {loginPage.GetPassword()}");
+            .Should().Be("Epic sadface: Username is required",
+                        $"error message should indicate missing username, username: {this._loginPage.GetUsername()}, password: {this._loginPage.GetPassword()}");
     }
 
     [TestMethod]
     [DynamicData(nameof(BrowserOptions), DynamicDataSourceType.Property)]
     public void Login_WithoutPassword_ShowsPasswordRequiredError(string options)
     {
-        var loginPage = new LoginPage(this.Driver ?? throw new InvalidOperationException("Driver not initialized"));
-
         var username = "asdf";
         var password = "zxcv";
 
-        loginPage.EnterUsername(username);
-        loginPage.EnterPassword(password);
+        this._loginPage.EnterUsername(username);
+        this._loginPage.EnterPassword(password);
 
         this.Logger.Verbose("Entered username {username}, current value: {CurrentUsername}",
-            username, loginPage.GetUsername());
+            username, this._loginPage.GetUsername());
         this.Logger.Verbose("Entered password {password}, current value: {CurrentPassword}",
-            password, loginPage.GetPassword());
+            password, this._loginPage.GetPassword());
 
-        loginPage.ClearPassword();
+        this._loginPage.ClearPassword();
 
-        this.Logger.Verbose("Cleared password, current value: {CurrentPassword}", loginPage.GetPassword());
+        this.Logger.Verbose("Cleared password, current value: {CurrentPassword}", this._loginPage.GetPassword());
 
-        loginPage.LoginExpectFailure();
+        this._loginPage.LoginExpectFailure();
 
         this.Logger.Information("Tried logging in with cleared password, current URL: {CurrentUrl}",
             this.Driver.Url);
@@ -88,32 +95,31 @@ public class LoginPageTests(TestContext testContext) : BaseTest(testContext), ID
         _ = this.Driver.Url.TrimEnd('/')
             .Should().Be(TestsConfig.BaseUrl, "login with no credentials should stay on the login page");
 
-        var errorMessage = loginPage.GetErrorMessage();
+        var errorMessage = this._loginPage.GetErrorMessage();
         this.Logger.Information("Verifying error message after login attempt, error message: {ErrorMessage}",
             errorMessage);
 
         _ = errorMessage
-            .Should().Be("Epic sadface: Password is required", $"error message should indicate missing password, username: {loginPage.GetUsername()}, password: {loginPage.GetPassword()}");
+            .Should().Be("Epic sadface: Password is required",
+                        $"error message should indicate missing password, username: {this._loginPage.GetUsername()}, password: {this._loginPage.GetPassword()}");
     }
 
     [TestMethod]
     [DynamicData(nameof(BrowserOptions), DynamicDataSourceType.Property)]
     public void Login_WithValidCredentials_RedirectsToInventoryPage(string options)
     {
-        var loginPage = new LoginPage(this.Driver ?? throw new InvalidOperationException("Driver not initialized"));
+        var username = this._loginPage.GetStandardAcceptedUsername();
+        var password = this._loginPage.GetAcceptedPassword();
 
-        var username = loginPage.GetStandardAcceptedUsername();
-        var password = loginPage.GetAcceptedPassword();
-
-        loginPage.EnterUsername(username);
-        loginPage.EnterPassword(password);
+        this._loginPage.EnterUsername(username);
+        this._loginPage.EnterPassword(password);
 
         this.Logger.Verbose("Entered username {username}, current value: {CurrentUsername}",
-            username, loginPage.GetUsername());
+            username, this._loginPage.GetUsername());
         this.Logger.Verbose("Entered password {password}, current value: {CurrentPassword}",
-            password, loginPage.GetPassword());
+            password, this._loginPage.GetPassword());
 
-        _ = loginPage.LoginExpectSuccess();
+        _ = this._loginPage.LoginExpectSuccess();
 
         this.Logger.Information("Login successful, current URL: {CurrentUrl}", this.Driver.Url);
         this.Logger.Information("Current page title: {PageTitle}", this.Driver.Title);

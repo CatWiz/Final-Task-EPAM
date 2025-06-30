@@ -14,7 +14,7 @@ namespace FinalTask.Tests;
 public class BaseTest : IDisposable
 {
     protected readonly ILogger Logger = LoggerFactory.GetLogger();
-    protected IWebDriver? Driver { get; private set; }
+    protected IWebDriver Driver { get; private set; } = null!;
     private readonly TestContext _testContext;
 
     private void InitializeDriver(string optionsName)
@@ -56,8 +56,11 @@ public class BaseTest : IDisposable
         this._testContext = testContext;
     }
 
+    /// <summary>
+    /// Runs before each test method.
+    /// </summary>
     [TestInitialize]
-    public void Initialize()
+    public virtual void TestInitialize()
     {
         this.Logger.Information("Starting test {testName}", this._testContext.TestName);
         if (this._testContext.TestData is null || this._testContext.TestData.Length == 0)
@@ -69,26 +72,29 @@ public class BaseTest : IDisposable
         if (this._testContext.TestData[0] is not string optionsName)
         {
             this.Logger.Error("First item in test data is not a string for test {testName}", this._testContext.TestName);
-            throw new InvalidOperationException("First element of test data must be a string");
+            throw new InvalidOperationException("First item in test data must be a string");
         }
 
         this.InitializeDriver(optionsName);
     }
 
+    /// <summary>
+    /// Runs after each test method.
+    /// </summary>
     [TestCleanup]
-    public void Cleanup()
+    public virtual void TestCleanup()
     {
         if (this.Driver is not null)
         {
             this.Logger.Information("Quitting driver for {testName} test", this._testContext.TestName);
             this.Driver.Quit();
             this.Driver.Dispose();
-            this.Driver = null;
+            this.Driver = null!;
         }
     }
 
     public virtual void Dispose()
     {
-        this.Cleanup();
+        this.TestCleanup();
     }
 }
