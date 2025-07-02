@@ -6,26 +6,22 @@ using OpenQA.Selenium.Support.UI;
 
 namespace FinalTask.PageObjects;
 
-public class LoginPage
+public class LoginPage : BasePageObject
 {
-    private readonly IWebDriver driver;
-
     #region Selectors and getters
 
-    private IWebElement UsernameField => this.driver.FindElement(By.CssSelector("input[type='text']#user-name.form_input"));
-    private IWebElement PasswordField => this.driver.FindElement(By.CssSelector("input[type='password']#password.form_input"));
-    private IWebElement LoginButton => this.driver.FindElement(By.CssSelector("input[type='submit']#login-button.submit-button"));
-    private IWebElement ErrorMessageDisplay => this.driver.FindElement(By.CssSelector("div.error-message-container h3[data-test='error']"));
-    private IWebElement AcceptedUsernamesList => this.driver.FindElement(By.CssSelector("div.login_credentials"));
-    private IWebElement AcceptedPasswordsList => this.driver.FindElement(By.CssSelector("div.login_password"));
+    private IWebElement UsernameField => this.FindByCss("input[type='text']#user-name.form_input");
+    private IWebElement PasswordField => this.FindByCss("input[type='password']#password.form_input");
+    private IWebElement LoginButton => this.FindByCss("input[type='submit']#login-button.submit-button");
+    private IWebElement ErrorMessageDisplay => this.FindByCss("div.error-message-container h3[data-test='error']");
+    private IWebElement AcceptedUsernamesList => this.FindByCss("div.login_credentials");
+    private IWebElement AcceptedPasswordsList => this.FindByCss("div.login_password");
 
     #endregion
 
-    public LoginPage(IWebDriver driver)
+    public LoginPage(IWebDriver driver) : base(driver)
     {
-        this.driver = driver;
-
-        if (driver.Url.TrimEnd('/') != TestsConfig.BaseUrl)
+        if (this.Url != TestsConfig.BaseUrl)
         {
             throw new InvalidOperationException($"Not on the login page, expected {TestsConfig.BaseUrl} but got {driver.Url}");
         }
@@ -78,7 +74,7 @@ public class LoginPage
     {
         this.UsernameField.ClearBySelectAndDelete();
 
-        _ = new WebDriverWait(this.driver, TimeSpan.FromSeconds(5))
+        _ = new WebDriverWait(this.webDriver, TimeSpan.FromSeconds(5))
             .Until(d => string.IsNullOrEmpty(this.GetUsername())); // Wait until the field is cleared
     }
 
@@ -89,7 +85,7 @@ public class LoginPage
     {
         this.PasswordField.ClearBySelectAndDelete();
 
-        _ = new WebDriverWait(this.driver, TimeSpan.FromSeconds(5))
+        _ = new WebDriverWait(this.webDriver, TimeSpan.FromSeconds(5))
             .Until(d => string.IsNullOrEmpty(this.GetPassword())); // Wait until the field is cleared
     }
 
@@ -102,10 +98,10 @@ public class LoginPage
     {
         this.LoginButton.Click();
 
-        _ = new WebDriverWait(this.driver, TimeSpan.FromSeconds(10))
+        _ = new WebDriverWait(this.webDriver, TimeSpan.FromSeconds(10))
             .Until(d => d.Url.Contains("/inventory.html"));
 
-        return new InventoryPage(this.driver);
+        return new InventoryPage(this.webDriver);
     }
 
     /// <summary>
@@ -113,7 +109,7 @@ public class LoginPage
     /// </summary>
     public void LoginExpectFailure()
     {
-        new Actions(this.driver)
+        new Actions(this.webDriver)
             .Pause(TimeSpan.FromSeconds(1)) // Optional pause before clicking
             .Click(this.LoginButton)
             .Pause(TimeSpan.FromSeconds(3)) // Wait for any potential error message or redirection

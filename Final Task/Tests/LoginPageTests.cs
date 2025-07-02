@@ -43,9 +43,9 @@ public class LoginPageTests(TestContext testContext) : BaseTest(testContext), ID
         this._loginPage.LoginExpectFailure();
 
         this.Logger.Information("Tried logging in with cleared credentials, current URL: {CurrentUrl}",
-            this.Driver.Url);
+            this._loginPage.Url);
 
-        _ = this.Driver.Url.TrimEnd('/')
+        _ = this._loginPage.Url
             .Should().Be(TestsConfig.BaseUrl, "login with no credentials should stay on the login page");
 
         var errorMessage = this._loginPage.GetErrorMessage();
@@ -79,9 +79,9 @@ public class LoginPageTests(TestContext testContext) : BaseTest(testContext), ID
         this._loginPage.LoginExpectFailure();
 
         this.Logger.Information("Tried logging in with cleared password, current URL: {CurrentUrl}",
-            this.Driver.Url);
+            this._loginPage.Url);
 
-        _ = this.Driver.Url.TrimEnd('/')
+        _ = this._loginPage.Url
             .Should().Be(TestsConfig.BaseUrl, "login with no credentials should stay on the login page");
 
         var errorMessage = this._loginPage.GetErrorMessage();
@@ -110,12 +110,12 @@ public class LoginPageTests(TestContext testContext) : BaseTest(testContext), ID
 
         _ = this._loginPage.LoginExpectSuccess();
 
-        this.Logger.Information("Login successful, current URL: {CurrentUrl}", this.Driver.Url);
-        this.Logger.Information("Current page title: {PageTitle}", this.Driver.Title);
+        this.Logger.Information("Login successful, current URL: {CurrentUrl}", this._loginPage.Url);
+        this.Logger.Information("Current page title: {PageTitle}", this._loginPage.Title);
 
-        _ = this.Driver.Url
+        _ = this._loginPage.Url
             .Should().Be($"{TestsConfig.BaseUrl}/inventory.html", "login with valid credentials should redirect to the inventory page");
-        _ = this.Driver.Title
+        _ = this._loginPage.Title
             .Should().Be("Swag Labs", "page title should be 'Swag Labs' after successful login");
     }
 }
