@@ -1,4 +1,4 @@
-﻿using FinalTask.Config;
+using FinalTask.Config;
 using FinalTask.Extensions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
@@ -12,19 +12,12 @@ public class LoginPage
 
     #region Selectors and getters
 
-    private const string UsernameFieldSelector = "input[type='text']#user-name.form_input";
-    private const string PasswordFieldSelector = "input[type='password']#password.form_input";
-    private const string LoginButtonSelector = "input[type='submit']#login-button.submit-button";
-    private const string ErrorMessageSelector = "div.error-message-container h3[data-test='error']";
-    private const string AcceptedUsernamesSelector = "div.login_credentials";
-    private const string AcceptedPasswordsSelector = "div.login_password";
-
-    private IWebElement UsernameField => this.driver.FindElement(By.CssSelector(UsernameFieldSelector));
-    private IWebElement PasswordField => this.driver.FindElement(By.CssSelector(PasswordFieldSelector));
-    private IWebElement LoginButton => this.driver.FindElement(By.CssSelector(LoginButtonSelector));
-    private IWebElement ErrorMessageDisplay => this.driver.FindElement(By.CssSelector(ErrorMessageSelector));
-    private IWebElement AcceptedUsernamesList => this.driver.FindElement(By.CssSelector(AcceptedUsernamesSelector));
-    private IWebElement AcceptedPasswordsList => this.driver.FindElement(By.CssSelector(AcceptedPasswordsSelector));
+    private IWebElement UsernameField => this.driver.FindElement(By.CssSelector("input[type='text']#user-name.form_input"));
+    private IWebElement PasswordField => this.driver.FindElement(By.CssSelector("input[type='password']#password.form_input"));
+    private IWebElement LoginButton => this.driver.FindElement(By.CssSelector("input[type='submit']#login-button.submit-button"));
+    private IWebElement ErrorMessageDisplay => this.driver.FindElement(By.CssSelector("div.error-message-container h3[data-test='error']"));
+    private IWebElement AcceptedUsernamesList => this.driver.FindElement(By.CssSelector("div.login_credentials"));
+    private IWebElement AcceptedPasswordsList => this.driver.FindElement(By.CssSelector("div.login_password"));
 
     #endregion
 
