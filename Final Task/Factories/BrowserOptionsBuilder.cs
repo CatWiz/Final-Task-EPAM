@@ -7,13 +7,6 @@ public sealed class BrowserOptionsBuilder
     private readonly BrowserOptionsContext _context = new();
     private IBrowserOptionsBuildStrategy? _strategy;
 
-    public enum BrowserType
-    {
-        Chrome,
-        Firefox,
-        Edge
-    }
-
     public BrowserOptionsBuilder WithBuildStrategy(IBrowserOptionsBuildStrategy strategy)
     {
         ArgumentNullException.ThrowIfNull(strategy);
@@ -67,27 +60,6 @@ public sealed class BrowserOptionsBuilder
         ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(height, 0);
 
         this._context.WindowSize = (width, height);
-        return this;
-    }
-
-    public BrowserOptionsBuilder WithDisableWebSecurity()
-    {
-        return this.AddArgument("--disable-web-security");
-    }
-
-    public BrowserOptionsBuilder WithDisableGpu()
-    {
-        return this.AddArgument("--disable-gpu");
-    }
-
-    public BrowserOptionsBuilder WithNoSandbox()
-    {
-        return this.AddArgument("--no-sandbox");
-    }
-
-    public BrowserOptionsBuilder WithIncognito()
-    {
-        this._context.Incognito = true;
         return this;
     }
 
