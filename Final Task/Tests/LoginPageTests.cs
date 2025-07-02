@@ -7,9 +7,6 @@ namespace FinalTask.Tests;
 [TestClass]
 public class LoginPageTests(TestContext testContext) : BaseTest(testContext), IDisposable
 {
-    public static IEnumerable<object[]> BrowserOptions => BrowserOptionsProvider.AllOptionsNames
-        .Select(name => new object[] { name });
-
     private LoginPage _loginPage = null!;
 
     [TestInitialize]
@@ -20,7 +17,7 @@ public class LoginPageTests(TestContext testContext) : BaseTest(testContext), ID
     }
 
     [TestMethod]
-    [DynamicData(nameof(BrowserOptions), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(BrowserOptionsProvider.AllOptionsNames), typeof(BrowserOptionsProvider), DynamicDataSourceType.Property)]
     public void Login_WithoutUsername_ShowsUsernameRequiredError(string options)
     {
         var username = "asdf";
@@ -58,7 +55,7 @@ public class LoginPageTests(TestContext testContext) : BaseTest(testContext), ID
     }
 
     [TestMethod]
-    [DynamicData(nameof(BrowserOptions), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(BrowserOptionsProvider.AllOptionsNames), typeof(BrowserOptionsProvider), DynamicDataSourceType.Property)]
     public void Login_WithoutPassword_ShowsPasswordRequiredError(string options)
     {
         var username = "asdf";
@@ -94,7 +91,7 @@ public class LoginPageTests(TestContext testContext) : BaseTest(testContext), ID
     }
 
     [TestMethod]
-    [DynamicData(nameof(BrowserOptions), DynamicDataSourceType.Property)]
+    [DynamicData(nameof(BrowserOptionsProvider.AllOptionsNames), typeof(BrowserOptionsProvider), DynamicDataSourceType.Property)]
     public void Login_WithValidCredentials_RedirectsToInventoryPage(string options)
     {
         var username = this._loginPage.GetStandardAcceptedUsername();
