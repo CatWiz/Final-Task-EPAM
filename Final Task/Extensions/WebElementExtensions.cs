@@ -4,7 +4,7 @@ using OpenQA.Selenium;
 
 namespace FinalTask.Extensions;
 
-public static class IWebElementExtensions
+public static class WebElementExtensions
 {
     /// <summary>
     /// Clears the input field by selecting all text and deleting it.

@@ -3,7 +3,7 @@ using Serilog;
 
 namespace FinalTask.Extensions;
 
-public static class ILoggerExtensions
+public static class LoggerExtensions
 {
     /// <summary>
     /// Logs browser options, capabilities, and command line arguments, as well as any additional options.
