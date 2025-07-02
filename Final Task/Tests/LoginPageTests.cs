@@ -7,19 +7,8 @@ namespace FinalTask.Tests;
 [TestClass]
 public class LoginPageTests(TestContext testContext) : BaseTest(testContext), IDisposable
 {
-    public static IEnumerable<object[]> BrowserOptions
-    {
-        get
-        {
-            yield return [nameof(BrowserOptionsProvider.ChromeHeadless)];
-            yield return [nameof(BrowserOptionsProvider.FirefoxHeadless)];
-            yield return [nameof(BrowserOptionsProvider.EdgeHeadless)];
-
-            yield return [nameof(BrowserOptionsProvider.ChromeHeadlessTiny)];
-            yield return [nameof(BrowserOptionsProvider.FirefoxHeadlessTiny)];
-            yield return [nameof(BrowserOptionsProvider.EdgeHeadlessTiny)];
-        }
-    }
+    public static IEnumerable<object[]> BrowserOptions => BrowserOptionsProvider.AllOptionsNames
+        .Select(name => new object[] { name });
 
     private LoginPage _loginPage = null!;
 

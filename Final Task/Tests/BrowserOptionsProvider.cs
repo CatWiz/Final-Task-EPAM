@@ -5,6 +5,16 @@ namespace FinalTask.Tests;
 
 public static class BrowserOptionsProvider
 {
+    public static IEnumerable<string> AllOptionsNames =>
+    [
+        nameof(ChromeHeadless),
+        nameof(FirefoxHeadless),
+        nameof(EdgeHeadless),
+        nameof(ChromeHeadlessTiny),
+        nameof(FirefoxHeadlessTiny),
+        nameof(EdgeHeadlessTiny)
+    ];
+
     public static BrowserOptions ChromeHeadless => BrowserOptionsBuilder.Create()
         .WithBuildStrategy(new ChromeOptionsBuildStrategy())
         .WithHeadless()
